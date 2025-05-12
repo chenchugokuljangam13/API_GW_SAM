@@ -2,9 +2,9 @@
 
 This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
 
-- hello-world - Code for the application's Lambda function written in TypeScript.
+- chat-app - Code for the application's Lambda function written in TypeScript.
 - events - Invocation events that you can use to invoke the function.
-- hello-world/tests - Unit tests for the application code. 
+- chat-app/tests - Unit tests for the application code. 
 - template.yaml - A template that defines the application's AWS resources.
 
 The application uses several AWS resources, including Lambda functions and an API Gateway API. These resources are defined in the `template.yaml` file in this project. You can update the template to add AWS resources through the same deployment process that updates your application code.
@@ -59,14 +59,14 @@ Build your application with the `sam build` command.
 API-WS-Chat-App$ sam build
 ```
 
-The SAM CLI installs dependencies defined in `hello-world/package.json`, compiles TypeScript with esbuild, creates a deployment package, and saves it in the `.aws-sam/build` folder.
+The SAM CLI installs dependencies defined in `chat-app/package.json`, compiles TypeScript with esbuild, creates a deployment package, and saves it in the `.aws-sam/build` folder.
 
 Test a single function by invoking it directly with a test event. An event is a JSON document that represents the input that the function receives from the event source. Test events are included in the `events` folder in this project.
 
 Run functions locally and invoke them with the `sam local invoke` command.
 
 ```bash
-API-WS-Chat-App$ sam local invoke HelloWorldFunction --event events/event.json
+API-WS-Chat-App$ sam local invoke ChatAppFunction --event events/event.json
 ```
 
 The SAM CLI can also emulate your application's API. Use the `sam local start-api` to run the API locally on port 3000.
@@ -74,17 +74,6 @@ The SAM CLI can also emulate your application's API. Use the `sam local start-ap
 ```bash
 API-WS-Chat-App$ sam local start-api
 API-WS-Chat-App$ curl http://localhost:3000/
-```
-
-The SAM CLI reads the application template to determine the API's routes and the functions that they invoke. The `Events` property on each function's definition includes the route and method for each path.
-
-```yaml
-      Events:
-        HelloWorld:
-          Type: Api
-          Properties:
-            Path: /hello
-            Method: get
 ```
 
 ## Add a resource to your application
@@ -97,19 +86,50 @@ To simplify troubleshooting, SAM CLI has a command called `sam logs`. `sam logs`
 `NOTE`: This command works for all AWS Lambda functions; not just the ones you deploy using SAM.
 
 ```bash
-API-WS-Chat-App$ sam logs -n HelloWorldFunction --stack-name API-WS-Chat-App --tail
+API-WS-Chat-App$ sam logs -n ChatAppFunction --stack-name API-WS-Chat-App --tail
 ```
 
 You can find more information and examples about filtering Lambda function logs in the [SAM CLI Documentation](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-logging.html).
 
 ## Unit tests
 
-Tests are defined in the `hello-world/tests` folder in this project. Use NPM to install the [Jest test framework](https://jestjs.io/) and run unit tests.
+Tests are defined in the `chat-app/tests` folder in this project. Use NPM to install the [Jest test framework](https://jestjs.io/) and run unit tests.
 
 ```bash
-API-WS-Chat-App$ cd hello-world
-hello-world$ npm install
-hello-world$ npm run test
+chat-app$ npm install
+chat-app$ npm run unit
+```
+
+## test
+
+Test the App by using cli(any)
+1. First install wawcat 
+```bash
+$ npm install -g wscat
+```
+2. now open 2 are more CLI tabs so you can test them.
+run this command
+```bash
+$ wscat -c wss://<api_id>.execute-api.<region>.amazonaws.com/<stage>
+```
+run this 2 different tabs to connect to websocket
+
+3. Now register to any group that you want in same tabs.
+```bash
+$ > {"action": "register", "groupId": "groupA"}
+```
+in 2 or more tabs, it means you are registered with that group so if anyone sends message in that group you can get that message.
+
+4. Send message
+```bash
+$ > {"action": "sendMessage", "groupId": "groupA", "message":"hi"}
+```
+here you have send the message so every one registered with that group will receive this message 
+
+```bash
+API-WS-Chat-App$ cd chat-app
+chat-app$ npm install
+chat-app$ npm run test
 ```
 
 ## Cleanup
