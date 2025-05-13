@@ -40,6 +40,6 @@ jobs:
           sam deploy \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset \
-            --stack-name ${{secrets.AWS_STACK_NAME}} \
+            --stack-name ${{ secrets.AWS_STACK_NAME }} \
             --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
             --region us-east-1
