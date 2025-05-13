@@ -1,0 +1,1 @@
+process.env.TableName = 'test-table';

@@ -99,6 +99,7 @@ Tests are defined in the `chat-app/tests` folder in this project. Use NPM to ins
 chat-app$ npm install
 chat-app$ npm run unit
 ```
+![Test Cases](images/test/testcase.png)
 
 ## test
 
@@ -126,11 +127,11 @@ $ > {"action": "sendMessage", "groupId": "groupA", "message":"hi"}
 ```
 here you have send the message so every one registered with that group will receive this message 
 
-```bash
-API-WS-Chat-App$ cd chat-app
-chat-app$ npm install
-chat-app$ npm run test
-```
+![Test Cases](images/cli/pic1.png)
+![Test Cases](images/cli/pic2.png)
+![Test Cases](images/cli/pic3.png)
+![Test Cases](images/cli/pic4.png)
+
 
 ## Cleanup
 
